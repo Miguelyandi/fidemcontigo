@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Paliativos\FidemContigoController;
+use App\Http\Controllers\PacienteController;
 // use App\Http\Controllers\Admin\FidemContigoController;
 // use App\Http\Controllers\Admin\OrdenesmtlasignarController;
 // use App\Http\Controllers\Admin\OrdenEjecutadaController;
@@ -299,7 +300,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('subir_archivo_ultpe', 'Paliativos\CosultaspeController@import')->name('subirarchivoupe')->middleware('superEditor');
     Route::post('subir_archivo_ultauxiliar', 'Paliativos\ConsultaAuxiliarController@import')->name('subirarchivouau')->middleware('superEditor');
     Route::post('subir_archivo_amb', 'Paliativos\BasePaliativosController@importambito')->name('subirarchivoamb')->middleware('superEditor');
-
+    Route::post('subir_archivo_eva', 'Paliativos\BasePaliativosController@importeva')->name('subirarchivoeva')->middleware('superEditor');
+    Route::post('subir_archivo_medi', 'Paliativos\BasePaliativosController@importmedi')->name('subirarchivomedi')->middleware('superEditor');
     //SELECT DE LISTAS
 
     route::get('selectlist', 'Paliativos\Listas\ListasDetalleController@select')->name('selectlist')->middleware('superEditor');
