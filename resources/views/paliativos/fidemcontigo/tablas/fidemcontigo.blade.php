@@ -17,10 +17,10 @@
             <tr>
               <th>Acciones</th>
               <th>N° Documento</th>
+              <th>Historia Clinica</th>
               <th>IDEVOLUCION</th>
               <th>Fecha apertura</th>
               <th>Fecha Evolución</th>
-              <th>Tipo HC</th>
               <th>Cuestionario</th>
               <th>Respuesta</th>
               <th>Profesional</th>
@@ -29,7 +29,10 @@
               <th>Primer nombre</th>
               <th>Segundo nombre</th>
               <th>EPS</th>
-              <th>Telefono</th>
+              <th>Telefono principal</th>
+              <th>Telefono avi</th>
+              <th>DX Principal</th>
+              <th>DX relacionado</th>
           
              </tr>
         </thead>
@@ -42,10 +45,10 @@
                             <td>
                               <button type="button" id="{{$dato->numdocum ?? ''}}" data-Acciones="{{ $dato->Acciones ?? ''}}"
                                 data-documento="{{ $dato->numdocum ?? '' }}"
+                                data-numhistoria="{{ $dato->numhistoria ?? '' }}"
                                 data-evo="{{ $dato->ID_EVOLUCION ?? '' }}"
                                 data-fecha="{{ $dato->fechahora_apertura ?? '' }}"
                                 data-historia="{{ $dato->fechahora_evolucion ?? '' }}"
-                                data-apertura="{{ $dato->tipo_historia ?? '' }}"
                                 data-cuestionario="{{ $dato->cuestionario ?? '' }}"
                                 data-respuesta="{{ $dato->respuesta ?? '' }}"
                                 data-profesional="{{ $dato->codigo_profesional ?? '' }}"
@@ -55,6 +58,9 @@
                                 data-nombr="{{ $dato->NOMBRE2 ?? '' }}"
                                 data-eps="{{ $dato->Entidad_salud ?? '' }}"
                                 data-tel="{{ $dato->Telefono ?? '' }}"
+                                data-tel1="{{ $dato->Telefono_avi ?? '' }}"
+                                data-dxp="{{ $dato->dx_principal ?? '' }}"
+                                data-dxr="{{ $dato->dx_secondary ?? '' }}"
                                name="Editar" title="Evolución" class = "evolucion btn-float  bg-gradient-warning btn-sm tooltipsC"><i class="fa fa-fw fa-plus-circle"></i></i></a>
                               </button>
 
@@ -85,10 +91,10 @@
                                                                                 
                             <!-- <td>{{$dato->Acciones ?? ''}}</td> -->
                             <td> {{$dato->numdocum ?? ''}}</td>
+                            <td> {{$dato->numhistoria ?? ''}}</td>
                             <td> {{$dato->ID_EVOLUCION ?? ''}}</td>
                             <td> {{$dato->fechahora_apertura ?? ''}}</td>
                             <td> {{$dato->fechahora_evolucion ?? ''}}</td>
-                            <td> {{$dato->tipo_historia ?? ''}}</td>
                             <td> {{$dato->cuestionario ?? ''}}</td>
                             <td> {{$dato->respuesta ?? ''}}</td>
                             <td> {{$dato->codigo_profesional ?? ''}}</td>
@@ -97,7 +103,11 @@
                             <td> {{$dato->NOMBRE1 ?? ''}}</td>
                             <td> {{$dato->NOMBRE2 ?? ''}}</td>
                             <td> {{$dato->Entidad_salud ?? ''}}</td> 
-                            <td> {{$dato->Telefono ?? ''}}</td>                                            
+                            <td> {{$dato->Telefono ?? ''}}</td> 
+                            <td> {{$dato->Telefono_avi ?? ''}}</td> 
+                            <td> {{$dato->dx_principal ?? ''}}</td> 
+                            <td> {{$dato->dx_secondary ?? ''}}</td> 
+                                                                     
                         </tr>
                        
           @endforeach

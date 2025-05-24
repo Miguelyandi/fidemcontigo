@@ -29,10 +29,11 @@ class CreateFidemcontigoTable extends Migration
             $table->string('nombr')->nullable();
             $table->string('eps');
             $table->string('tel', 20);
-            $table->string('pertinencia', 20);
-            $table->string('medicamentos')->nullable();
-            $table->string('nombreMedicamento')->nullable();
-            $table->string('observacion')->nullable();
+            $table->string('medicamentos');
+            $table->string('nombreMedicamento');
+            $table->string('observacion');
+            $table->date('fechaIngreso');
+            $table->date('fechaEgreso');
             $table->timestamps();
         });
     }

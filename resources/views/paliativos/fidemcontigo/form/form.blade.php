@@ -11,6 +11,10 @@
             <label for="documento" class="form-label" style="color: #000000;">N° Documento</label>
             <input type="text" style="color: #000000;" name="documento" id="documento" class="form-control UpperCase" value="{{old('documento')}}" readonly>
         </div>
+         <div class="col-md-3">
+            <label for="numhistoria" class="form-label" style="color: #000000;">Historia</label>
+            <input type="text" style="color: #000000;" name="numhistoria" id="numhistoria" class="form-control UpperCase" value="{{old('numhistoria')}}" readonly>
+        </div>
         <div class="col-md-3">
             <label for="evo" class="form-label" style="color: #000000;">ID Evolución</label>
             <input type="text" style="color: #000000;" name="evo" id="evo" class="form-control UpperCase" value="{{old('evo')}}" readonly>
@@ -19,18 +23,19 @@
             <label for="fecha" class="form-label" style="color: #000000;">FechaApertura</label>
             <input type="text" style="color: #000000;" name="fecha" id="fecha" class="form-control UpperCase" value="{{old('fecha')}}" readonly>
         </div>
-        <div class="col-md-3">
-            <label for="historia" class="form-label" style="color: #000000;">FechaEvolución</label>
-            <input type="text" style="color: #000000;" name="historia" id="historia" class="form-control UpperCase" value="{{old('historia')}}" readonly>
-        </div>
+        
     </div>
 
     <!-- Segunda fila -->
     <div class="row mb-3">
         <div class="col-md-3">
+            <label for="historia" class="form-label" style="color: #000000;">FechaEvolución</label>
+            <input type="text" style="color: #000000;" name="historia" id="historia" class="form-control UpperCase" value="{{old('historia')}}" readonly>
+        </div>
+        <!-- <div class="col-md-3">
             <label for="apertura" class="form-label" style="color: #000000;">Tipo HC</label>
             <input type="text" style="color: #000000;" name="apertura" id="apertura" class="form-control UpperCase" value="{{old('apertura')}}" readonly>
-        </div>
+        </div> -->
         <div class="col-md-3">
             <label for="cuestionario" class="form-label" style="color: #000000;">Cuestionario</label>
             <input type="text" style="color: #000000;" name="cuestionario" id="cuestionario" class="form-control UpperCase" value="{{old('cuestionario')}}" readonly>
@@ -75,6 +80,19 @@
             <label for="tel" class="form-label" style="color: #000000;">Teléfono</label>
             <input type="text" style="color: #000000;" name="tel" id="tel" class="form-control UpperCase" value="{{old('tel')}}" readonly>
         </div>
+        <div class="col-md-3">
+            <label for="tel1" class="form-label" style="color: #000000;">Telefono avi</label>
+            <input type="text" style="color: #000000;" name="tel1" id="tel1" class="form-control UpperCase" value="{{old('tel1')}}" readonly>
+        </div>
+
+        <div class="col-md-3">
+            <label for="dxp" class="form-label" style="color: #000000;">DX PPL</label>
+            <input type="text" style="color: #000000;" name="dxp" id="dxp" class="form-control UpperCase" value="{{old('dxp')}}" readonly>
+        </div>
+        <div class="col-md-3">
+            <label for="dxr" class="form-label" style="color: #000000;">DX RL</label>
+            <input type="text" style="color: #000000;" name="dxr" id="dxr" class="form-control UpperCase" value="{{old('dxr')}}" readonly> 
+        </div>       
     </div>
 
     <!-- Pertenencia -->

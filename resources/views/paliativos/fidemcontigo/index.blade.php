@@ -401,7 +401,7 @@ $('#form-general').on('submit', function(event){
            var evo = $(this).attr('data-evo');
            var fecha = $(this).attr('data-fecha');
            var historia = $(this).attr('data-historia');
-           var apertura = $(this).attr('data-apertura');
+           
            var cuestionario = $(this).attr('data-cuestionario');
            var respuesta = $(this).attr('data-respuesta');
            var profesional = $(this).attr('data-profesional');
@@ -417,7 +417,7 @@ $('#form-general').on('submit', function(event){
             $('#evo').val(evo);
             $('#fecha').val(fecha);
             $('#historia').val(historia);
-            $('#apertura').val(apertura);
+            
             $('#cuestionario').val(cuestionario);
             $('#respuesta').val(respuesta);
             $("#profesional").val(profesional);
@@ -439,10 +439,11 @@ $('#form-general').on('submit', function(event){
         function limpiar() {
 
             $('#documento').val('');
+            $('#numhistoria').val('');
             $('#evo').val('');
             $('#fecha').val('');
             $('#historia').val('');
-            $('#apertura').val('');
+            
             $('#cuestionario').val('');
             $('#respuesta').val('');
             $("#profesional").val('');
@@ -452,16 +453,20 @@ $('#form-general').on('submit', function(event){
             $('#nombr').val('');
             $('#eps').val('');
             $('#tel').val('');
+            $('#tel1').val('');
+            $('#dxp').val('');
+            $('#dxr').val('');
 
         }
 
         $(document).on('click', '.evolucion', function(){
             limpiar();
             var documento = $(this).attr('data-documento');
+            var numhistoria = $(this).attr('data-numhistoria');
             var evo = $(this).attr('data-evo');
             var fecha = $(this).attr('data-fecha');
             var historia = $(this).attr('data-historia');
-            var apertura = $(this).attr('data-apertura');
+            
             var cuestionario = $(this).attr('data-cuestionario');
             var respuesta = $(this).attr('data-respuesta');
             var profesional = $(this).attr('data-profesional');
@@ -471,13 +476,17 @@ $('#form-general').on('submit', function(event){
             var nombr = $(this).attr('data-nombr');
             var eps = $(this).attr('data-eps');
             var tel = $(this).attr('data-tel');
+            var tel1 = $(this).attr('data-tel1');
+            var dxp = $(this).attr('data-dxp');
+            var dxr = $(this).attr('data-dxr');
             
             
             $('#documento').val(documento);
+            $('#numhistoria').val(numhistoria);
             $('#evo').val(evo);
             $('#fecha').val(fecha);
             $('#historia').val(historia);
-            $('#apertura').val(apertura);
+            
             $('#cuestionario').val(cuestionario);
             $('#respuesta').val(respuesta);
             $("#profesional").val(profesional);
@@ -487,6 +496,9 @@ $('#form-general').on('submit', function(event){
             $('#nombr').val(nombr);
             $('#eps').val(eps);
             $('#tel').val(tel);
+            $('#tel1').val(tel1);
+            $('#dxp').val(dxp);
+            $('#dxr').val(dxr);
             $('#modal-evolution').modal('show');
 
         });

@@ -67,52 +67,75 @@ class FidemContigoController extends Controller
     }
 
     // Método para mostrar la vista principal con datos desde SQL Server
-    public function index()
-    {
+public function index()
+{
+    $datos = DB::connection('local_sql')
+        ->table('his_m_evolucion AS he')
+        ->leftJoin('his_m_apertura AS ha', 'ha.ID_APERTURA', '=', 'he.ID_APERTURA')
+        ->leftJoin('fac_m_tarjetero AS ft', 'ha.HISTORIA', '=', 'ft.HISTORIA')
+        ->leftJoin('gen_m_persona AS gp', 'gp.ID_PERSONA', '=', 'ft.ID_PERSONA')
+        ->join('his_m_evolucion_cuestionario AS hec', 'he.ID_EVOLUCION', '=', 'hec.ID_EVOLUCION')
 
+        ->join(DB::raw('(
+            SELECT 
+                dx.DOCUMENTO, 
+                dx.FACTURA,
+                MAX(CASE WHEN dx.diagnostico IN (\'C_PPAL\', \'P_PPAL\') THEN dx.causa ELSE NULL END) AS dx_principal,
+                MAX(CASE WHEN dx.diagnostico IN (\'C_RELA\', \'P_RELA\') THEN dx.causa ELSE NULL END) AS dx_secondary
+            FROM fac_m_procedimientos_dx dx
+            GROUP BY dx.DOCUMENTO, dx.FACTURA
+        ) AS dx1'), function($join) {
+            $join->on('dx1.DOCUMENTO', '=', 'he.DOCUMENTO_FACTURA');
+            $join->on('dx1.FACTURA', '=', 'he.NUMERO_FACTURA');
+        })
 
+        ->join(DB::raw('(
+            SELECT 
+                ft.NUMDOCUM, 
+                MAX(he.FECHAHORA_EVOLUCION) AS max_fechahora
+            FROM his_m_evolucion he
+            LEFT JOIN his_m_apertura ha ON ha.ID_APERTURA = he.ID_APERTURA
+            LEFT JOIN fac_m_tarjetero ft ON ha.HISTORIA = ft.HISTORIA
+            INNER JOIN his_m_evolucion_cuestionario hec ON he.ID_EVOLUCION = hec.ID_EVOLUCION
+            WHERE hec.CUESTIONARIO_RESPUESTA = \'eva\'
+              AND hec.RESPUESTA > \'0\'
+              AND he.FECHAHORA_EVOLUCION >= DATEADD(DAY, -45, GETDATE())
+            GROUP BY ft.NUMDOCUM
+        ) AS ultimas'), function($join) {
+            $join->on('ultimas.NUMDOCUM', '=', 'ft.NUMDOCUM');
+            $join->on('ultimas.max_fechahora', '=', 'he.FECHAHORA_EVOLUCION');
+        })
 
-        $fecha = Carbon::now()->subDays(5)->toDateTimeString();
+        ->select([
+            DB::raw('ft.NUMDOCUM AS numdocum'),
+            DB::raw('ha.HISTORIA AS numhistoria'),
+            DB::raw('he.ID_EVOLUCION'),
+            DB::raw('ha.FECHA_APERTURA AS fechahora_apertura'),
+            DB::raw('he.FECHAHORA_EVOLUCION AS fechahora_evolucion'),
+            DB::raw('hec.CUESTIONARIO AS cuestionario'),
+            DB::raw('hec.RESPUESTA AS respuesta'),
+            DB::raw('he.CODIGO_USUARIO AS codigo_profesional'),
+            DB::raw('ft.APELLIDO1'),
+            DB::raw('ft.APELLIDO2'),
+            DB::raw('ft.NOMBRE1'),
+            DB::raw('ft.NOMBRE2'),
+            DB::raw('ft.EMPRESA AS Entidad_salud'),
+            DB::raw('ft.TELEFRES AS Telefono'),
+            DB::raw('ft.AVISAR_TEL AS Telefono_avi'),
+            DB::raw('gp.TELEFONO_RESIDENCIA'),
+            DB::raw('gp.TELEFONO_MOVIL'),
+            DB::raw('dx1.dx_principal'),
+            DB::raw('dx1.dx_secondary')
+        ])
+        ->where('hec.CUESTIONARIO_RESPUESTA', '=', 'eva')
+        ->where('hec.RESPUESTA', '>', 0)
+        ->whereRaw('he.FECHAHORA_EVOLUCION >= DATEADD(DAY, -45, GETDATE())')
+        ->orderBy('ft.NUMDOCUM')
+        ->get();
 
+    return view('paliativos.fidemcontigo.index', compact('datos'));
+}
 
-  
-        // Ejecutar la consulta en SQL Server (local_sql)
-        $datos = DB::connection('local_sql')
-    ->table('his_m_evolucion AS he')
-    ->leftJoin('his_m_apertura AS ha', 'ha.ID_APERTURA', '=', 'he.ID_APERTURA')
-    ->leftJoin('fac_m_tarjetero AS ft', 'ha.HISTORIA', '=', 'ft.NUMDOCUM')
-    ->join('his_m_evolucion_cuestionario AS hec', 'he.ID_EVOLUCION', '=', 'hec.ID_EVOLUCION')
-    ->select([
-        DB::raw("ha.HISTORIA AS numdocum"),
-        DB::raw("he.ID_EVOLUCION"),
-        DB::raw("ha.FECHA_APERTURA AS fechahora_apertura"),
-        DB::raw("he.FECHAHORA_EVOLUCION AS fechahora_evolucion"),
-        DB::raw("ha.TIPO_APERTURA AS tipo_historia"),
-        DB::raw("hec.CUESTIONARIO AS cuestionario"),
-        DB::raw("hec.RESPUESTA AS respuesta"),
-        DB::raw("he.CODIGO_USUARIO AS codigo_profesional"),
-        DB::raw("ft.APELLIDO1 AS APELLIDO1"),
-        DB::raw("ft.APELLIDO2 AS APELLIDO2"),
-        DB::raw("ft.NOMBRE1 AS NOMBRE1"),
-        DB::raw("ft.NOMBRE2 AS NOMBRE2"),
-        DB::raw("ft.EMPRESA AS Entidad_salud"),
-        DB::raw("ft.TELEFRES AS Telefono"),
-    ])
-    ->where('hec.CUESTIONARIO_RESPUESTA', '=', 'eva')
-    ->where('hec.RESPUESTA', '>=', 8)
-    ->whereRaw("ha.FECHA_APERTURA >= DATEADD(DAY, -45, GETDATE())")
-    ->orderBy('numdocum')
-    ->get();
-
-    
-    //   ->get();
-
-
-
-        
-               // Enviar los datos a la vista
-        return view('paliativos.fidemcontigo.index', compact('datos'));
-    }
 
     
 

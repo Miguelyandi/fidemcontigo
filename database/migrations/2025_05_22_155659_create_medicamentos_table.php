@@ -13,14 +13,24 @@ class CreateMedicamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('medicamentos', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_medicamento')->unique();
-            $table->string('id_evolucion', 100);
-            $table->string('nombre', 100);
-            $table->string('dosis', 100);
-            $table->timestamps();
-        });
+       chema::create('ordenes_medicamentos_filtradas', function (Blueprint $table) {
+        $table->id(); // ID autoincremental de Laravel
+        $table->unsignedBigInteger('id_evolucion');
+        $table->string('causa')->nullable();
+        $table->string('codigo')->nullable();
+        $table->string('presentacion')->nullable();
+        $table->string('nombre')->nullable();
+        $table->integer('cantidad')->nullable();
+        $table->string('administracion')->nullable();
+        $table->decimal('dosis_cant', 8, 2)->nullable();
+        $table->integer('dosis_freq')->nullable();
+        $table->string('dosis_hora')->nullable(); // puede ser string si es tipo hora
+        $table->integer('numero_dosis')->nullable();
+        $table->string('posologia')->nullable();
+        $table->text('observaciones')->nullable();
+
+        $table->timestamps(); // created_at y updated_at
+    });
     }
 
     /**
