@@ -7,12 +7,95 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Carbon\carbon;
-use App\Models\FidemContigo;
+use App\Models\FidemContigo\Fidemcontigo;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportEva;
+use App\Imports\ImportMedicamentos;
 // use App\Models\Paliativos\fidemcontigo\observacionesfidemcontigo;
 
 
 class FidemContigoController extends Controller
 {
+
+
+     public function importeva(Request $request)
+    {
+
+   if($request->ajax()){
+
+
+    $file5 = $request->file('file5');
+    $file6 = $request->file('file6');
+
+        if($file5 != null){
+
+        $this->importaExcel($request);
+
+        return response()->json(['mensaje' => 'ok']);
+
+        }else if($file6 != null){
+
+        $this->importaExcel2($request);
+
+         return response()->json(['mensaje' => 'ok']);
+
+        }else{
+
+            return response()->json(['mensaje' => 'vacio']);//return redirect('admin/archivo')->with('mensaje', 'No seleccionaste ningun archivo');
+        }
+
+    }
+
+   }
+
+
+    public function importaExcel(Request $request)
+    {
+
+         // Guardo la colección en $file
+
+       $file = $request->file('file5');
+
+       $name=time().$file->getClientOriginalName();
+
+
+        $destinationPath = public_path('importbd/');
+
+        $file->move($destinationPath, $name);
+
+        $path=$destinationPath.$name;
+
+       // $import = new EstadosImport();
+
+    Excel::import(new ImportEva, $path);
+
+    }
+
+    public function importaExcel2(Request $request)
+    {
+
+         // Guardo la colección en $file
+
+       $file = $request->file('file6');
+
+       $name=time().$file->getClientOriginalName();
+
+
+        $destinationPath = public_path('importbd2/');
+
+        $file->move($destinationPath, $name);
+
+        $path=$destinationPath.$name;
+
+       // $import = new EstadosImport();
+
+    Excel::import(new ImportMedicamentos, $path);
+
+    }
+
+
+
+
 
     //Metodo para guardar los datos
     public function store(Request $request)
@@ -69,73 +152,34 @@ class FidemContigoController extends Controller
     // Método para mostrar la vista principal con datos desde SQL Server
 public function index()
 {
-    $datos = DB::connection('local_sql')
-        ->table('his_m_evolucion AS he')
-        ->leftJoin('his_m_apertura AS ha', 'ha.ID_APERTURA', '=', 'he.ID_APERTURA')
-        ->leftJoin('fac_m_tarjetero AS ft', 'ha.HISTORIA', '=', 'ft.HISTORIA')
-        ->leftJoin('gen_m_persona AS gp', 'gp.ID_PERSONA', '=', 'ft.ID_PERSONA')
-        ->join('his_m_evolucion_cuestionario AS hec', 'he.ID_EVOLUCION', '=', 'hec.ID_EVOLUCION')
-
-        ->join(DB::raw('(
-            SELECT 
-                dx.DOCUMENTO, 
-                dx.FACTURA,
-                MAX(CASE WHEN dx.diagnostico IN (\'C_PPAL\', \'P_PPAL\') THEN dx.causa ELSE NULL END) AS dx_principal,
-                MAX(CASE WHEN dx.diagnostico IN (\'C_RELA\', \'P_RELA\') THEN dx.causa ELSE NULL END) AS dx_secondary
-            FROM fac_m_procedimientos_dx dx
-            GROUP BY dx.DOCUMENTO, dx.FACTURA
-        ) AS dx1'), function($join) {
-            $join->on('dx1.DOCUMENTO', '=', 'he.DOCUMENTO_FACTURA');
-            $join->on('dx1.FACTURA', '=', 'he.NUMERO_FACTURA');
-        })
-
-        ->join(DB::raw('(
-            SELECT 
-                ft.NUMDOCUM, 
-                MAX(he.FECHAHORA_EVOLUCION) AS max_fechahora
-            FROM his_m_evolucion he
-            LEFT JOIN his_m_apertura ha ON ha.ID_APERTURA = he.ID_APERTURA
-            LEFT JOIN fac_m_tarjetero ft ON ha.HISTORIA = ft.HISTORIA
-            INNER JOIN his_m_evolucion_cuestionario hec ON he.ID_EVOLUCION = hec.ID_EVOLUCION
-            WHERE hec.CUESTIONARIO_RESPUESTA = \'eva\'
-              AND hec.RESPUESTA > \'0\'
-              AND he.FECHAHORA_EVOLUCION >= DATEADD(DAY, -45, GETDATE())
-            GROUP BY ft.NUMDOCUM
-        ) AS ultimas'), function($join) {
-            $join->on('ultimas.NUMDOCUM', '=', 'ft.NUMDOCUM');
-            $join->on('ultimas.max_fechahora', '=', 'he.FECHAHORA_EVOLUCION');
-        })
-
-        ->select([
-            DB::raw('ft.NUMDOCUM AS numdocum'),
-            DB::raw('ha.HISTORIA AS numhistoria'),
-            DB::raw('he.ID_EVOLUCION'),
-            DB::raw('ha.FECHA_APERTURA AS fechahora_apertura'),
-            DB::raw('he.FECHAHORA_EVOLUCION AS fechahora_evolucion'),
-            DB::raw('hec.CUESTIONARIO AS cuestionario'),
-            DB::raw('hec.RESPUESTA AS respuesta'),
-            DB::raw('he.CODIGO_USUARIO AS codigo_profesional'),
-            DB::raw('ft.APELLIDO1'),
-            DB::raw('ft.APELLIDO2'),
-            DB::raw('ft.NOMBRE1'),
-            DB::raw('ft.NOMBRE2'),
-            DB::raw('ft.EMPRESA AS Entidad_salud'),
-            DB::raw('ft.TELEFRES AS Telefono'),
-            DB::raw('ft.AVISAR_TEL AS Telefono_avi'),
-            DB::raw('gp.TELEFONO_RESIDENCIA'),
-            DB::raw('gp.TELEFONO_MOVIL'),
-            DB::raw('dx1.dx_principal'),
-            DB::raw('dx1.dx_secondary')
-        ])
-        ->where('hec.CUESTIONARIO_RESPUESTA', '=', 'eva')
-        ->where('hec.RESPUESTA', '>', 0)
-        ->whereRaw('he.FECHAHORA_EVOLUCION >= DATEADD(DAY, -45, GETDATE())')
-        ->orderBy('ft.NUMDOCUM')
-        ->get();
-
-    return view('paliativos.fidemcontigo.index', compact('datos'));
+   
+    return view('paliativos.fidemcontigo.index');
 }
 
+public function indexFidem(Request $request)
+{
+    // Verifica si la solicitud es AJAX
+    if ($request->ajax()) {
+        // Obtiene los datos de la base de datos
+        $datas = Fidemcontigo::where('estado','Activo')->get();
+
+
+        return  DataTables()->of($datas)
+            ->addColumn('action', function ($datas) {
+                $button = '<button type="button" name="novedad" id="' . $datas->id . '" class="novedad btn btn-float btn-sm btn-success tooltipsC" title="Adicionar seguimientos"  ><i class="fas fa-notes-medical "></i></button>' .
+                $button = '<button type="button" name="estado" id="' . $datas->id . '" class="addestado btn btn-float btn-sm btn-warning tooltipsC" title="Ver Seguimientos"  ><i class="fas fa-user-check"></i></button><br>';
+
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+       
+    }
+
+    // Si no es una solicitud AJAX, redirige a la vista principal
+    //return view('paliativos.fidemcontigo.index');
+
+}
 
     
 
@@ -188,12 +232,7 @@ public function index()
         return view('paliativos.fidemcontigo.indexInforme');
     }
 
-    public function mostrarModal()
-    {
-        $datos = Modelo::all();
 
-        return view('paliativos.fidemcontigo.modal.modalfidemcontigo', compact('datos'));
-    }
 
     public function index1(Request $request)
     {

@@ -88,7 +88,7 @@
             '3': "{{ route('subirarchivouau') }}",
             '4': "{{ route('subirarchivoamb') }}",
             '5': "{{ route('subirarchivoeva') }}",
-            '6': "{{ route('subirarchivomedi') }}"
+            '6': "{{ route('subirarchivoeva') }}"
             // Agrega más rutas si tienes más formularios
         };
         var url = rutas[num];

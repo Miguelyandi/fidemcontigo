@@ -1188,57 +1188,5 @@ class BasePaliativosController extends Controller
         }
     }
     
-    
-     public function importambito(Request $request)
-    {
-
-        if ($request->ajax()) {
-            $file = $request->file('file3');
-
-            if ($file == null) {
-
-                return response()->json(['mensaje' => 'vacio']); //return redirect('admin/archivo')->with('mensaje', 'No seleccionaste ningun archivo');
-
-
-            } else {
-
-                $this->importaExcela($request);
-
-
-
-
-                return response()->json(['mensaje' => 'ok', $rowCount] ); //return redirect('admin/archivo')->with('mensaje', 'Archivo cargado exitosamente');
-
-
-            }
-        }
-    }
-
-
-    public function importaExcela(Request $request)
-    {
-
-        // Guardo la colección en $file
-
-        $file = $request->file('file3');
-
-        $name = time() . $file->getClientOriginalName();
-
-
-        $destinationPath = public_path('importbd/');
-
-        $file->move($destinationPath, $name);
-
-        $path = $destinationPath . $name;
-
-        // $import = new EstadosImport();
-
-        Excel::import(new AmbitoImport, $path);
-        
-     
-        
-         // Puedes retornar información adicional, como la cantidad de registros procesados
-        $rowCount = (new AmbitoImport)->getRowCount();
-        return $rowCount;
-    }
+ 
 }

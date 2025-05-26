@@ -13,9 +13,9 @@ class CreateMedicamentosTable extends Migration
      */
     public function up()
     {
-       chema::create('ordenes_medicamentos_filtradas', function (Blueprint $table) {
-        $table->id(); // ID autoincremental de Laravel
-        $table->unsignedBigInteger('id_evolucion');
+       Schema::create('ordenes_medicamentos_filtradas', function (Blueprint $table) {
+        $table->bigIncrements('id'); // ID autoincremental de Laravel
+        $table->foreignId('evoluciones_id')->constrained('evoluciones')->onDelete('cascade');
         $table->string('causa')->nullable();
         $table->string('codigo')->nullable();
         $table->string('presentacion')->nullable();
@@ -23,13 +23,14 @@ class CreateMedicamentosTable extends Migration
         $table->integer('cantidad')->nullable();
         $table->string('administracion')->nullable();
         $table->decimal('dosis_cant', 8, 2)->nullable();
-        $table->integer('dosis_freq')->nullable();
-        $table->string('dosis_hora')->nullable(); // puede ser string si es tipo hora
+        $table->string('dosis_freq')->nullable();
+        $table->string('dosis_hora')->nullable();
         $table->integer('numero_dosis')->nullable();
-        $table->string('posologia')->nullable();
+        $table->text('posologia')->nullable();
         $table->text('observaciones')->nullable();
-
-        $table->timestamps(); // created_at y updated_at
+        $table->boolean('entregado')->nullable(); // si el medicamento fue entregado
+        $table->text('observacion_entrega')->nullable(); // observación específica del medicamento
+        $table->timestamps();
     });
     }
 
@@ -40,6 +41,6 @@ class CreateMedicamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicamentos');
+        Schema::dropIfExists('ordenes_medicamentos_filtradas'); 
     }
 }

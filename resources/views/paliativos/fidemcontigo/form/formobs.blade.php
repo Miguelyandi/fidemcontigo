@@ -14,7 +14,7 @@
 
 
 
-<form action="{{ route('buscar.paciente') }}" method="POST">
+<form action="#" method="POST">
     @csrf 
 
 <div class="container mt-4">

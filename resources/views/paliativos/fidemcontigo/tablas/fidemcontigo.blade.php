@@ -11,112 +11,38 @@
         </div>
       <div class="card-body table-responsive p-2">
 
-      <table id="psicologica" class="table table-hover  text-nowrap">
+      <table id="fidemcontigo" class="table table-hover  text-nowrap">
        
         <thead>
             <tr>
               <th>Acciones</th>
+              <th>ID</th>
+              <th>Tipo Documento</th>
               <th>N° Documento</th>
-              <th>Historia Clinica</th>
-              <th>IDEVOLUCION</th>
-              <th>Fecha apertura</th>
-              <th>Fecha Evolución</th>
-              <th>Cuestionario</th>
-              <th>Respuesta</th>
-              <th>Profesional</th>
-              <th>Primer apellido</th>
-              <th>Segundo apellido</th>
-              <th>Primer nombre</th>
-              <th>Segundo nombre</th>
-              <th>EPS</th>
-              <th>Telefono principal</th>
-              <th>Telefono avi</th>
-              <th>DX Principal</th>
-              <th>DX relacionado</th>
-          
+              <th>Historia Clínica</th>
+              <th>Primer Apellido</th>
+              <th>Segundo Apellido</th>
+              <th>Primer Nombre</th>
+              <th>Segundo Nombre</th>
+              <th>Entidad de Salud (EPS)</th>
+              <th>Teléfono Principal</th>
+              <th>Teléfono AVI</th>
+              <th>Teléfono Residencia</th>
+              <th>Teléfono Móvil</th>
+              <th>Estado</th>
+              <th>Fecha Última Evolución</th>
+              <th>EVA</th>
+              <th>Creacion</th>
              </tr>
         </thead>
         <tbody>
 
-          @foreach ($datos as $dato)
-                        
-                        
-                                                       
-                            <td>
-                              <button type="button" id="{{$dato->numdocum ?? ''}}" data-Acciones="{{ $dato->Acciones ?? ''}}"
-                                data-documento="{{ $dato->numdocum ?? '' }}"
-                                data-numhistoria="{{ $dato->numhistoria ?? '' }}"
-                                data-evo="{{ $dato->ID_EVOLUCION ?? '' }}"
-                                data-fecha="{{ $dato->fechahora_apertura ?? '' }}"
-                                data-historia="{{ $dato->fechahora_evolucion ?? '' }}"
-                                data-cuestionario="{{ $dato->cuestionario ?? '' }}"
-                                data-respuesta="{{ $dato->respuesta ?? '' }}"
-                                data-profesional="{{ $dato->codigo_profesional ?? '' }}"
-                                data-apellido="{{ $dato->APELLIDO1 ?? '' }}"
-                                data-apellid="{{ $dato->APELLIDO2 ?? '' }}"
-                                data-nombre="{{ $dato->NOMBRE1 ?? '' }}"
-                                data-nombr="{{ $dato->NOMBRE2 ?? '' }}"
-                                data-eps="{{ $dato->Entidad_salud ?? '' }}"
-                                data-tel="{{ $dato->Telefono ?? '' }}"
-                                data-tel1="{{ $dato->Telefono_avi ?? '' }}"
-                                data-dxp="{{ $dato->dx_principal ?? '' }}"
-                                data-dxr="{{ $dato->dx_secondary ?? '' }}"
-                               name="Editar" title="Evolución" class = "evolucion btn-float  bg-gradient-warning btn-sm tooltipsC"><i class="fa fa-fw fa-plus-circle"></i></i></a>
-                              </button>
-
-                            <button type="button" id="{{$dato->numdocum ?? ''}}"
-                                    data-acciones="{{ $dato->Acciones ?? '' }}"
-                                    data-documento="{{ $dato->numdocum ?? '' }}"
-                                    data-evo="{{ $dato->ID_EVOLUCION ?? '' }}"
-                                    data-fecha="{{ $dato->fechahora_apertura ?? '' }}"
-                                    data-historia="{{ $dato->fechahora_evolucion ?? '' }}"
-                                    data-apertura="{{ $dato->tipo_historia ?? '' }}"
-                                    data-cuestionario="{{ $dato->cuestionario ?? '' }}"
-                                    data-respuesta="{{ $dato->respuesta ?? '' }}"
-                                    data-profesional="{{ $dato->codigo_profesional ?? '' }}"
-                                    data-apellido="{{ $dato->APELLIDO1 ?? '' }}"
-                                    data-apellid="{{ $dato->APELLIDO2 ?? '' }}"
-                                    data-nombre="{{ $dato->NOMBRE1 ?? '' }}"
-                                    data-nombr="{{ $dato->NOMBRE2 ?? '' }}"
-                                    data-eps="{{ $dato->Entidad_salud ?? '' }}"
-                                    data-tel="{{ $dato->Telefono ?? '' }}"
-                                    title="Observación"
-                                    class="observacion btn btn-warning btn-sm">
-                                <i class="fa fa-eye"></i>
-                            </button>
-
-                             
-
-                            </td>
-                                                                                
-                            <!-- <td>{{$dato->Acciones ?? ''}}</td> -->
-                            <td> {{$dato->numdocum ?? ''}}</td>
-                            <td> {{$dato->numhistoria ?? ''}}</td>
-                            <td> {{$dato->ID_EVOLUCION ?? ''}}</td>
-                            <td> {{$dato->fechahora_apertura ?? ''}}</td>
-                            <td> {{$dato->fechahora_evolucion ?? ''}}</td>
-                            <td> {{$dato->cuestionario ?? ''}}</td>
-                            <td> {{$dato->respuesta ?? ''}}</td>
-                            <td> {{$dato->codigo_profesional ?? ''}}</td>
-                            <td> {{$dato->APELLIDO1 ?? ''}}</td>
-                            <td> {{$dato->APELLIDO2 ?? ''}}</td>
-                            <td> {{$dato->NOMBRE1 ?? ''}}</td>
-                            <td> {{$dato->NOMBRE2 ?? ''}}</td>
-                            <td> {{$dato->Entidad_salud ?? ''}}</td> 
-                            <td> {{$dato->Telefono ?? ''}}</td> 
-                            <td> {{$dato->Telefono_avi ?? ''}}</td> 
-                            <td> {{$dato->dx_principal ?? ''}}</td> 
-                            <td> {{$dato->dx_secondary ?? ''}}</td> 
-                                                                     
-                        </tr>
-                       
-          @endforeach
-
+         
 
         </tbody>
       </table>
     </div>
-  </form>
+
     <!-- /.card-body -->
 </div>
 </div>

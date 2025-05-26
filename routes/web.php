@@ -300,8 +300,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('subir_archivo_ultpe', 'Paliativos\CosultaspeController@import')->name('subirarchivoupe')->middleware('superEditor');
     Route::post('subir_archivo_ultauxiliar', 'Paliativos\ConsultaAuxiliarController@import')->name('subirarchivouau')->middleware('superEditor');
     Route::post('subir_archivo_amb', 'Paliativos\BasePaliativosController@importambito')->name('subirarchivoamb')->middleware('superEditor');
-    Route::post('subir_archivo_eva', 'Paliativos\BasePaliativosController@importeva')->name('subirarchivoeva')->middleware('superEditor');
-    Route::post('subir_archivo_medi', 'Paliativos\BasePaliativosController@importmedi')->name('subirarchivomedi')->middleware('superEditor');
+    Route::post('subir_archivo_eva', [FidemContigoController::class, 'importeva'])->name('subirarchivoeva')->middleware('superEditor');
+  
     //SELECT DE LISTAS
 
     route::get('selectlist', 'Paliativos\Listas\ListasDetalleController@select')->name('selectlist')->middleware('superEditor');
@@ -328,10 +328,11 @@ Route::group(['middleware' => ['auth']], function () {
     
     
 
-Route::get('fidemcontigo', [FidemContigoController::class, 'index'])->name('fidemcontigo.index');
-Route::post('fidemcontigo/analista', [FidemContigoController::class, 'indexAnalista'])->name('fidemcontigo.analista');
-Route::post('fidemcontigo/consulta', [FidemContigoController::class, 'indexConsulta'])->name('fidemcontigo.consulta');
-Route::post('fidemcontigo/informe', [FidemContigoController::class, 'indexInforme'])->name('fidemcontigo.informe');
+Route::get('fidemcontigo', [FidemContigoController::class, 'index'])->name('fidemcontigo.index1');
+Route::post('fidemcontigo1', [FidemContigoController::class, 'indexFidem'])->name('fidemcontigo.indexfidem1');
+Route::post('fidemcontigo/analista', [FidemContigoController::class, 'indexAnalista'])->name('fidemcontigo.analista1');
+Route::post('fidemcontigo/consulta', [FidemContigoController::class, 'indexConsulta'])->name('fidemcontigo.consulta1');
+Route::post('fidemcontigo/informe', [FidemContigoController::class, 'indexInforme'])->name('fidemcontigo.informe1');
 
 });
 

@@ -13,27 +13,24 @@ class CreateFidemcontigoTable extends Migration
      */
     public function up()
     {
-        Schema::create('fidemcontigo', function (Blueprint $table) {
+        Schema::create('fidemcontigos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('documento');
-            $table->integer('evo');
-            $table->dateTime('fecha');
-            $table->dateTime('historia');
-            $table->string('apertura');
-            $table->text('cuestionario');
-            $table->integer('respuesta');
-            $table->string('profesional');
-            $table->string('apellido');
-            $table->string('apellid')->nullable();
-            $table->string('nombre');
-            $table->string('nombr')->nullable();
-            $table->string('eps');
-            $table->string('tel', 20);
-            $table->string('medicamentos');
-            $table->string('nombreMedicamento');
-            $table->string('observacion');
-            $table->date('fechaIngreso');
-            $table->date('fechaEgreso');
+            $table->string('tipdocum', 10);
+            $table->string('numdocum', 20)->unique(); // Documento como identificador único
+            $table->string('numhistoria');
+            $table->string('apellido1');
+            $table->string('apellido2')->nullable();
+            $table->string('nombre1');
+            $table->string('nombre2')->nullable();
+            $table->string('entidad_salud');
+            $table->string('telefono');
+            $table->string('telefono_avi')->nullable();
+            $table->string('telefono_residencia')->nullable();
+            $table->string('telefono_movil')->nullable();
+            $table->string('estado')->default('pendiente'); // activo o inactivo según EVA
+            $table->string('id_evolucion')->nullable();
+            $table->timestamp('fecha_ultima_evolucion')->nullable();
+            $table->string('eva')->nullable(); // último EVA
             $table->timestamps();
         });
     }
@@ -45,6 +42,6 @@ class CreateFidemcontigoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fidemcontigo');
+        Schema::dropIfExists('fidemcontigos');
     }
 }

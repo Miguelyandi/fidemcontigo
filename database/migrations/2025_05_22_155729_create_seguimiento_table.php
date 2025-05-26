@@ -13,12 +13,13 @@ class CreateSeguimientoTable extends Migration
      */
     public function up()
     {
-        Schema::create('seguimiento', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_seguimiento')->unique();
-            $table->integer('id_evolucion');
-            $table->string('fecha_seguimiento', 100);
-            $table->string('observacion', 100);
+        Schema::create('seguimientos', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('fidemcontigos_id')->constrained('fidemcontigos')->onDelete('cascade');
+            $table->foreignId('evoluciones_id')->constrained('evoluciones')->onDelete('cascade'); // muchos seguimientos para una evolución
+            $table->boolean('todos_entregados')->default(false); // indica si se entregaron todos
+            $table->text('observacion_general')->nullable(); // observación del seguimiento completo
+            $table->string('estado_contacto')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateSeguimientoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seguimiento');
+        Schema::dropIfExists('seguimientos');
     }
 }

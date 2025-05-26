@@ -13,12 +13,17 @@ class CreateEvolucionTable extends Migration
      */
     public function up()
     {
-        Schema::create('evolucion', function (Blueprint $table) {
+        Schema::create('evoluciones', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_evolucion');
-            $table->integer('id_paciente');
-            $table->string('fecha_evolucion');
-            $table->string('descripcion');
+            $table->foreignId('fidemcontigos_id')->constrained('fidemcontigos')->onDelete('cascade');
+            $table->string('id_evolucion')->unique();
+            $table->timestamp('fechahora_apertura')->nullable();
+            $table->timestamp('fechahora_evolucion')->nullable();
+            $table->string('cuestionario');
+            $table->string('respuesta'); // EVA
+            $table->string('codigo_profesional');
+            $table->string('dx_principal')->nullable();
+            $table->string('dx_secondary')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +35,6 @@ class CreateEvolucionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('evolucion');
+        Schema::dropIfExists('evoluciones');
     }
 }
