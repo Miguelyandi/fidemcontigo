@@ -9,7 +9,7 @@ $('.menu_rol').on('change', function () {
     } else {
         data.estado = 0
     }
-    ajaxRequest('/admin/menu-rol', data);
+    ajaxRequest('/nominaips/admin/menu-rol', data);
 });
 
 function ajaxRequest (url, data) {
@@ -18,7 +18,7 @@ function ajaxRequest (url, data) {
         type: 'POST',
         data: data,
         success: function (respuesta) {
-            Manteliviano.notificaciones(respuesta.respuesta, 'Manteliviano', 'info');
+            Manteliviano.notificaciones(respuesta.respuesta, 'Control Turnos', 'info');
         }
     });
 }
