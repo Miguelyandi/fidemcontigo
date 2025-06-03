@@ -767,6 +767,85 @@ $('#fidemcontigo').DataTable({
                                         "copy": "Copiar",
                                         "colvis": "Visibilidad"
                                     }
+// Función para filtrar seguimientos por profesional, EPS y rango de fechas
+$(document).on('click', '#btn-filtrar-seguimientos', function () {
+    const profesional = $('#filtro-profesional').val();
+    const eps = $('#filtro-eps').val();
+    const fechaInicio = $('#filtro-fecha-inicio').val();
+    const fechaFin = $('#filtro-fecha-fin').val();
+
+    $('#timeline-seguimientos').html('');
+
+    $.ajax({
+        url: "filtrar_seguimientos",
+        method: "GET",
+        data: {
+            profesional: profesional,
+            eps: eps,
+            fecha_inicio: fechaInicio,
+            fecha_fin: fechaFin
+        },
+        dataType: "json",
+        success: function (data) {
+            $('#timeline-seguimientos').html('');
+
+            if (data?.length) {
+                data.forEach(function (seg) {
+                    let user = seg.user_seguimiento;
+                    let nombreUsuario = user 
+                        ? `${user.pnombre ?? ''} ${user.snombre ?? ''} ${user.papellido ?? ''} ${user.sapellido ?? ''}`.trim()
+                        : 'Usuario';
+                    let fecha = seg.created_at ?? '';
+                    let observacion = seg.observacion_general ?? 'Sin observación';
+                    let estado = seg.estado_contacto ?? '';
+                    let entregado = seg.todos_entregados ? 'Sí' : 'No';
+
+                    let medicamentos = '';
+                    if (seg.medicamentosegui && seg.medicamentosegui.length > 0) {
+                        medicamentos += '<ul>';
+                        seg.medicamentosegui.forEach(function (med) {
+                            medicamentos += `<li>${med.nombre} - ${med.observacion_entrega ?? ''} - 
+                            <strong>Entregado:</strong> ${med.entregado == 1 || med.entregado === "1" || med.entregado === "si" ? '✅' : '❌'}</li>`;
+                        });
+                        medicamentos += '</ul>';
+                    } else {
+                        medicamentos = '<p>No se registraron medicamentos en este seguimiento.</p>';
+                    }
+
+                    let html = `
+                    <div>
+                        <i class="fas fa-user-md bg-info"></i>
+                        <div class="timeline-item">
+                            <span class="time"><i class="fas fa-clock"></i> ${fecha}</span>
+                            <h3 class="timeline-header"><strong>${nombreUsuario}</strong> realizó seguimiento</h3>
+                            <div class="timeline-body">
+                                <p><strong>Estado contacto:</strong> ${estado}</p>
+                                <p><strong>¿Todos los medicamentos entregados?:</strong> ${entregado}</p>
+                                <p><strong>Observación:</strong> ${observacion}</p>
+                                <p><strong>Medicamentos entregados:</strong></p>
+                                ${medicamentos}
+                            </div>
+                        </div>
+                    </div>`;
+
+                    $('#timeline-seguimientos').append(html);
+                });
+            } else {
+                $('#timeline-seguimientos').html('<li><div class="timeline-item"><div class="timeline-body text-muted">No se encontraron seguimientos con los filtros aplicados.</div></div></li>');
+            }
+
+            $('#modal-seguimientos').modal('show');
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        if (jqXHR.status === 403) {
+            Manteliviano.notificaciones('No tienes permisos para realizar esta acción', 'Sistema Ventas', 'warning');
+        } else {
+            Manteliviano.notificaciones('Error al filtrar seguimientos', 'Sistema Ventas', 'error');
+        }
+    });
+});
+
+                                    
 }
 </script>
 
